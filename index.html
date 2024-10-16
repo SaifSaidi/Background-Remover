@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover by Saif Saidi</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-xl w-full">
+        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Background Remover</h2>
+        <p class="text-center text-gray-600 mb-4">
+            <a href="/about.html" class="underline">by Saif Saidi</a>
+        </p>
+
+        <form id="uploadForm" class="space-y-6">
+            <!-- Image Upload Section -->
+            <div class="flex flex-col items-center space-y-4">
+                <input type="file" id="fileInput" accept="image/*" class="hidden" />
+                <label for="fileInput" class="cursor-pointer text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none">
+                    Choose an Image
+                </label>
+                <button type="button" id="removeBgButton" class="bg-gradient-to-r from-green-400 from-10%   to-90% text-white px-4 py-2 rounded-lg  bg-green-600 focus:outline-none disabled:opacity-50" disabled>
+                    Remove Background
+                </button>
+            </div>
+
+            <!-- Export Options -->
+            <div class="flex flex-col md:flex-row md:space-x-4">
+                <div class="w-full">
+                    <label for="format" class="block text-gray-700 font-semibold">Export Format:</label>
+                    <select id="format" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="webp">WebP</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                    </select>
+                </div>
+
+                <!-- Image Quality -->
+                <div class="w-full">
+                    <label for="quality" class="block text-gray-700 font-semibold">Quality:</label>
+                    <select id="quality" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filename -->
+            <div>
+                <label for="filename" class="block text-gray-700 font-semibold">Output Filename:</label>
+                <input type="text" id="filename" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="output">
+            </div>
+        </form>
+
+        <!-- Image Preview Section -->
+        <div id="imagePreviews" class="flex justify-around mt-8 hidden">
+            <div class="text-center">
+                <h3 class="text-lg font-semibold mb-2">Before</h3>
+                <img id="beforeImage" src="#" alt="Original Image" class="w-48 h-auto rounded-lg shadow-md" />
+            </div>
+            <div class="text-center">
+                <h3 class="text-lg font-semibold mb-2">After</h3>
+                <img id="afterImage" src="#" alt="Processed Output" class="w-48 h-auto rounded-lg shadow-md" />
+                <a id="downloadLink" href="#" download="output.webp" class="mt-2 text-blue-500 underline block">Download</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const removeBgButton = document.getElementById("removeBgButton");
+        const imagePreviews = document.getElementById("imagePreviews");
+        const beforeImage = document.getElementById("beforeImage");
+        const afterImage = document.getElementById("afterImage");
+        const downloadLink = document.getElementById("downloadLink");
+        const formatSelect = document.getElementById("format");
+        const qualitySelect = document.getElementById("quality");
+        const filenameInput = document.getElementById("filename");
+ 
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files.length) {
+                removeBgButton.disabled = false;
+                const fileURL = URL.createObjectURL(fileInput.files[0]);
+                beforeImage.src = fileURL;
+                imagePreviews.classList.remove("hidden");
+            }
+        });
+
+        // Handle background removal processing
+        removeBgButton.addEventListener("click", async () => {
+            const file = fileInput.files[0];
+            const format = formatSelect.value;
+            const quality = qualitySelect.value;
+            const filename = filenameInput.value || "output"; // Default to "output" if empty
+
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("format", format);
+            formData.append("quality", quality);
+
+            // Disable button while processing
+            removeBgButton.disabled = true;
+            removeBgButton.textContent = "Processing...";
+
+            try {
+                const response = await fetch("http://localhost:3000/api/remove-bg", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to process image.");
+                }
+
+                const blob = await response.blob();
+
+                // Create URL for the processed image
+                const outputURL = URL.createObjectURL(blob);
+                afterImage.src = outputURL;
+                downloadLink.href = outputURL;
+                downloadLink.download = `${filename}.${format}`;
+
+                // Show processed image
+                imagePreviews.classList.remove("hidden");
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                removeBgButton.disabled = false;
+                removeBgButton.textContent = "Remove Background";
+            }
+        });
+    </script>
+</body>
+</html>

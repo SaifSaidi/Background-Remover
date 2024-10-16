@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@xixiyahaha/rembg-node": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5"
+  },
+  "name": "background-remover",
+  "version": "1.0.0",
+  "description": "background-remover is simple a web application tool remove backgrounds from images, using rembg-node package",
+  "main": "server.js",
+  "scripts": {
+    
+  },
+  "keywords": [
+    "js",
+    "remove-background"
+  ],
+  "author": "Saif Saidi",
+  "license": "MIT"
+}
