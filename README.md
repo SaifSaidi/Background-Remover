@@ -14,7 +14,7 @@ A simple web application that removes the background from uploaded images. Built
 
 ## Demo
 
-![Demo](demo.gif) <!-- Optional: Add a link to a demo gif or video if available -->
+![Demo](https://github.com/SaifSaidi/Background-Remover/blob/main/Background%20Remover%20by%20Saif%20Saidi.png?raw=true) <!-- Optional: Add a link to a demo gif or video if available -->
 
 ## Author
 
