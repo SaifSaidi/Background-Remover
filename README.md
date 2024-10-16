@@ -30,8 +30,3 @@ Developed by Saif Saidi.
 - [Node.js](https://nodejs.org/) installed on your system.
 
 ## Getting Started
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/background-remover.git
-   cd background-remover
