@@ -30,3 +30,13 @@ Developed by Saif Saidi.
 - [Node.js](https://nodejs.org/) installed on your system.
 
 ## Getting Started
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/SaifSaidi/Background-Remover.git
+   cd background-remover```
+2. **Install Dependencies, Run The Server:**:
+  ```bash
+    npm install
+    node server.js
+      The server will start on http://localhost:3000.
+    Open Index.html from any local server
