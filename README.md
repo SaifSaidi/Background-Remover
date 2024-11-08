@@ -22,7 +22,7 @@ Developed by Saif Saidi.
 
 ## Tech Stack
 
-- **Frontend**: HTML, JavaScript, Tailwind CSS
+- **Frontend**: Node, JavaScript, HTML, Tailwind CSS
 - **Backend**: Node.js, [@xixiyahaha/rembg-node](https://www.npmjs.com/package/@xixiyahaha/rembg-node)
 
 ## Prerequisites
