@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.post("/api/remove-bg", upload.single("image"), async (req, res) => {
-    const format = req.body.format || "webp"; // Default format is WebP if not specified
+    const format = req.body.format || "webp";
+    const quality = req.body.quality || "high";
 
     if (!req.file) {
         return res.status(400).send("No file uploaded.");
@@ -23,24 +24,39 @@ app.post("/api/remove-bg", upload.single("image"), async (req, res) => {
 
         const rembg = new Rembg({
             logging: true,
+            
         });
 
         const output = await rembg.remove(inputImage);
         
-        // Process image to selected format
         let outputBuffer;
+        let qualityValue;
+
+        switch (quality) {
+            case "low":
+                qualityValue = 60;
+                break;
+            case "medium":
+                qualityValue = 80;
+                break;
+            case "high":
+            default:
+                qualityValue = 100;
+                break;
+        }
+
         switch (format) {
             case "jpeg":
-                outputBuffer = await output.jpeg().toBuffer();
+                outputBuffer = await output.jpeg({ quality: qualityValue }).toBuffer();
                 res.set("Content-Type", "image/jpeg");
                 break;
             case "png":
-                outputBuffer = await output.png().toBuffer();
+                outputBuffer = await output.png({ quality: qualityValue }).toBuffer();
                 res.set("Content-Type", "image/png");
                 break;
             case "webp":
             default:
-                outputBuffer = await output.webp().toBuffer();
+                outputBuffer = await output.webp({ quality: qualityValue }).toBuffer();
                 res.set("Content-Type", "image/webp");
                 break;
         }
