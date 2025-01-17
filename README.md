@@ -1,4 +1,4 @@
-# Background Remover Web Application (v2)
+# Background Remover Web Application
 
 A simple web application that removes the background from uploaded images. Built with JavaScript, Tailwind CSS, and Node.js, this app allows users to upload an image, remove its background, and customize export options like format, quality, and filename.
 
@@ -12,7 +12,7 @@ A simple web application that removes the background from uploaded images. Built
 - **Improved layout**
 - **Users can now select multiple images**
 - **Preview of selected images with the option to remove individual files**
-- 
+  
 ## Features
 
 - **Image Upload**: Upload any image file and preview it before processing.
